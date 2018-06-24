@@ -1,5 +1,6 @@
 package com.search.image.imagesearch.view;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.search.image.imagesearch.R;
 import com.search.image.imagesearch.model.Image;
@@ -33,7 +35,7 @@ public class ImageViewFragment extends  android.support.v4.app.Fragment implemen
     private Button searchButton;
     private ImageViewAdapter quickViewAdaptor;
     private LinearLayoutManager layoutManager;
-   Context mContext;
+   Activity mContext;
     public ImageViewFragment() {
     }
 
@@ -45,7 +47,7 @@ public class ImageViewFragment extends  android.support.v4.app.Fragment implemen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        mContext=getActivity();
         setHasOptionsMenu(true);
 
 
@@ -102,6 +104,12 @@ public class ImageViewFragment extends  android.support.v4.app.Fragment implemen
 
         quickViewAdaptor = new ImageViewAdapter(getActivity(),data);
         quickViewList.setAdapter(quickViewAdaptor);
+        quickViewList.invalidate();
+        if(data.size()==0){
+if(mContext!=null)
+            Toast.makeText(mContext,"No images for your search item..",Toast.LENGTH_LONG).show();
+        }
+
 
 
     }
