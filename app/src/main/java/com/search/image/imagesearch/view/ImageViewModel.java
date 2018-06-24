@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
-import com.search.image.imagesearch.com.search.utility.ImageLoader;
+import com.search.image.imagesearch.com.search.utility.HttpClient;
 import com.search.image.imagesearch.model.Image;
 
 /**
@@ -25,14 +25,10 @@ import com.search.image.imagesearch.model.Image;
 
         private void loadPhoto(String url,Context context) {
             // Do an asynchronous operation to fetch users.
-            ImageLoader imgLoader = new ImageLoader(context);
-           // int loader = R.drawable.ic_launcher_background;
-            // whenever you want to load an image from url
-            // call DisplayImage function
-            // url - image url to load
-            // loader - loader image, will be displayed before getting image
-            // image - ImageView
-            imgLoader.loadWebData(images,url);
+
+
+            HttpClient.getInstance(context).loadWebData(images,url);
+
         }
     }
 

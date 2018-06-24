@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.search.image.imagesearch.R;
-import com.search.image.imagesearch.com.search.utility.ImageLoader;
+import com.search.image.imagesearch.com.search.utility.HttpClient;
 import com.search.image.imagesearch.model.Photo;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ImageViewAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-   // private QuickViewItemClickListener itemClickListener;
+
     private Context mContext;
     private List<Photo> imageData;
 
@@ -74,17 +74,11 @@ public class ImageViewAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
 
-            ImageLoader imgLoader = new ImageLoader(mContext);
+         ;
             int loader = R.drawable.ic_launcher_background;
-            // whenever you want to load an image from url
-            // call DisplayImage function
-            // url - image url to load
-            // loader - loader image, will be displayed before getting image
-            // image - ImageView
-         // String url=http://farm%7Bfarm%7D.static.flickr.com/%7Bserver%7D/%7Bid%7D_%7Bsecret%7D.jpg
 
-            String url =  String.format(mContext.getResources().getString(R.string.url),photo.getFarm(),photo.getServer(),photo.getId(),photo.getSecret());
-            imgLoader.DisplayImage(url, loader, imageView);
+            String url =  String.format(mContext.getResources().getString(R.string.url_image),photo.getFarm(),photo.getServer(),photo.getId(),photo.getSecret());
+            HttpClient.getInstance(mContext).DisplayImage(url, loader, imageView);
 
 
         }

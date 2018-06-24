@@ -17,6 +17,7 @@
     <EditText
         android:id="@+id/edittext_search"
         android:layout_width="260dp"
+        android:hint="Please type...."
         android:layout_height="40dp" />
         <Button
             android:id="@+id/button_search"

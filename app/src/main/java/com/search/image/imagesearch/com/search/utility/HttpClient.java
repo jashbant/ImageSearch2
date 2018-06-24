@@ -36,14 +36,21 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ImageLoader {
+public class HttpClient {
 
     MemoryCache memoryCache=new MemoryCache();
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
+   private static HttpClient mInstance=null;
+    public static  HttpClient getInstance(Context context){
+        if(mInstance==null){
+            mInstance = new HttpClient(context);
+        }
+        return mInstance;
+    }
 
-    public ImageLoader(Context context){
+    private HttpClient(Context context){
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
