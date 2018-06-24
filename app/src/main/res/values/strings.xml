@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ImageSearch</string>
+    <string name="url">http://farm%d.static.flickr.com/%s/%s_%s.jpg</string>
+    <string name="url_content">"https://api.flickr.com/services/rest/?method=flickr.photos.search&amp;api_key=3e7cc266ae2b0e0d78e279ce8e361736&amp;format=json&amp;nojsoncallback=1&amp;safe_search=1&amp;text=%s"</string>
+
+
+</resources>
