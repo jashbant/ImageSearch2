@@ -127,7 +127,7 @@ public class ImageViewFragment extends  android.support.v4.app.Fragment implemen
 
         ImageViewModel model = ViewModelProviders.of(this).get(ImageViewModel.class);
         String url=String.format(getActivity().getResources().getString(R.string.url_content),str);
-        model.getPhoto(url,getActivity().getApplicationContext()).observe(this,  new Observer<Image>() {
+        model.getPhoto(url,getActivity()).observe(this,  new Observer<Image>() {
             @Override
             public void onChanged(@Nullable Image image) {
 

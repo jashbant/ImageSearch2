@@ -1,6 +1,6 @@
 package com.search.image.imagesearch.view;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +19,12 @@ import java.util.List;
 public class ImageViewAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-    private Context mContext;
+    private Activity mContext;
     private List<Photo> imageData;
 
 
 
-    public ImageViewAdapter(Context context,List<Photo> data) {
+    public ImageViewAdapter(Activity context,List<Photo> data) {
         mContext = context;
         imageData = data;
     }

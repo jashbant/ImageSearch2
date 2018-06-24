@@ -1,9 +1,9 @@
 package com.search.image.imagesearch.view;
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 
 import com.search.image.imagesearch.com.search.utility.HttpClient;
 import com.search.image.imagesearch.model.Image;
@@ -15,7 +15,7 @@ import com.search.image.imagesearch.model.Image;
 
     public class ImageViewModel extends ViewModel {
         private MutableLiveData<Image> images;
-        public LiveData<Image> getPhoto(String url,Context context) {
+        public LiveData<Image> getPhoto(String url,Activity context) {
 
                 images = new MutableLiveData<Image>();
                 loadPhoto(url,context);
@@ -23,7 +23,7 @@ import com.search.image.imagesearch.model.Image;
             return images;
         }
 
-        private void loadPhoto(String url,Context context) {
+        private void loadPhoto(String url,Activity context) {
             // Do an asynchronous operation to fetch users.
 
 

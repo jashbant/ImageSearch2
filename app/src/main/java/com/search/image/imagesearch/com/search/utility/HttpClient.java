@@ -10,6 +10,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,16 +45,16 @@ public class HttpClient {
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
-    Context mContext;
+    Activity mContext;
    private static HttpClient mInstance=null;
-    public static  HttpClient getInstance(Context context){
+    public static  HttpClient getInstance(Activity context){
         if(mInstance==null){
             mInstance = new HttpClient(context);
         }
         return mInstance;
     }
 
-    private HttpClient(Context context){
+    private HttpClient(Activity context){
         mContext =context;
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
@@ -74,9 +75,17 @@ public class HttpClient {
         }
     }
 public void loadWebData(MutableLiveData<Image> image, String url){
-    mProgress = new ProgressDialog(mContext.getApplicationContext());
-    mProgress.setMessage("Downloading nPlease wait...");
-   // mProgress.show();
+    if(!isNetworkConnected()){
+        Toast.makeText(mContext,"Please check your internet connection...",Toast.LENGTH_LONG).show();
+        return;
+    }
+  try {
+      mProgress = new ProgressDialog(mContext);
+      mProgress.setMessage("Downloading nPlease wait...");
+      mProgress.show();
+  }catch (Exception e){
+
+  }
         executorService.submit(new JsonLoader(image,url));
 }
     ProgressDialog mProgress;
@@ -113,7 +122,7 @@ final Image data=gson.fromJson(response,Image.class);
             mainHandler.post(myRunnable);
         } catch (Exception ex){
             mProgress.dismiss();
-            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG);
+            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG).show();
             ex.printStackTrace();
 
         }
@@ -199,6 +208,7 @@ final Image data=gson.fromJson(response,Image.class);
     private Bitmap getBitmap(String url)
     {    String path = Environment.getExternalStorageDirectory().toString();
 
+
         StringTokenizer tokenizer = new StringTokenizer(url,"/");
         String token="";
         while(tokenizer.hasMoreTokens()){
@@ -218,6 +228,10 @@ final Image data=gson.fromJson(response,Image.class);
             return b;
 
         //from web
+        if(!isNetworkConnected()){
+            Toast.makeText(mContext,"Please check your internet connection...",Toast.LENGTH_LONG).show();
+            return null;
+        }
         try {
             Bitmap bitmap=null;
             URL imageUrl = new URL(url);
@@ -233,7 +247,7 @@ final Image data=gson.fromJson(response,Image.class);
            // bitmap=BitmapFactory.decodeStream(is);
             return bitmap;
         } catch (Exception ex){
-            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG);
+            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG).show();
             ex.printStackTrace();
             return null;
         }
@@ -339,6 +353,12 @@ String url ="https://api.flickr.com/services/rest/?method=flickr.photos.search&a
     public void clearCache() {
         memoryCache.clear();
         fileCache.clear();
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
 }
