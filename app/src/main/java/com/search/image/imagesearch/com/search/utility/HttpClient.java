@@ -5,6 +5,7 @@ package com.search.image.imagesearch.com.search.utility;
  */
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.search.image.imagesearch.R;
@@ -42,6 +44,7 @@ public class HttpClient {
     FileCache fileCache;
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
+    Context mContext;
    private static HttpClient mInstance=null;
     public static  HttpClient getInstance(Context context){
         if(mInstance==null){
@@ -51,6 +54,7 @@ public class HttpClient {
     }
 
     private HttpClient(Context context){
+        mContext =context;
         fileCache=new FileCache(context);
         executorService=Executors.newFixedThreadPool(5);
     }
@@ -70,10 +74,12 @@ public class HttpClient {
         }
     }
 public void loadWebData(MutableLiveData<Image> image, String url){
-
+    mProgress = new ProgressDialog(mContext.getApplicationContext());
+    mProgress.setMessage("Downloading nPlease wait...");
+   // mProgress.show();
         executorService.submit(new JsonLoader(image,url));
 }
-
+    ProgressDialog mProgress;
 
     public void loadData(final MutableLiveData<Image> image,String url)
     {
@@ -100,12 +106,14 @@ final Image data=gson.fromJson(response,Image.class);
                 @Override
                 public void run() {
 
-
+                    mProgress.dismiss();
                     image.setValue(data);
                 } // This is your code
             };
             mainHandler.post(myRunnable);
         } catch (Exception ex){
+            mProgress.dismiss();
+            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG);
             ex.printStackTrace();
 
         }
@@ -196,7 +204,15 @@ final Image data=gson.fromJson(response,Image.class);
         while(tokenizer.hasMoreTokens()){
              token=tokenizer.nextToken();
         }
-      File  file = new File(path, token);
+
+        File file = null;
+        try {
+            file = new File(mContext.getFilesDir().getCanonicalPath()+token);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // path = file.getAbsolutePath();
+      //File  file = new File(path, token);
         Bitmap b = decodeFile(file);
         if(b!=null)
             return b;
@@ -217,6 +233,7 @@ final Image data=gson.fromJson(response,Image.class);
            // bitmap=BitmapFactory.decodeStream(is);
             return bitmap;
         } catch (Exception ex){
+            Toast.makeText(mContext,"Please try again...",Toast.LENGTH_LONG);
             ex.printStackTrace();
             return null;
         }
