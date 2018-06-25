@@ -81,7 +81,7 @@ public void loadWebData(MutableLiveData<Image> image, String url){
     }
   try {
       mProgress = new ProgressDialog(mContext);
-      mProgress.setMessage("Downloading nPlease wait...");
+      mProgress.setMessage("Please wait...");
       mProgress.show();
   }catch (Exception e){
 
