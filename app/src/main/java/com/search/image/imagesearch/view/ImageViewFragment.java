@@ -90,7 +90,7 @@ public class ImageViewFragment extends  android.support.v4.app.Fragment implemen
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //toolbar = getActivity().findViewById(R.id.toolbar);
+
 
     }
 

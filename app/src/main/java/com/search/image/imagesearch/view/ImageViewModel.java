@@ -24,7 +24,7 @@ import com.search.image.imagesearch.model.Image;
         }
 
         private void loadPhoto(String url,Activity context) {
-            // Do an asynchronous operation to fetch users.
+
 
 
             HttpClient.getInstance(context).loadWebData(images,url);
